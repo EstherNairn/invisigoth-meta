@@ -1,1 +1,0 @@
-# Placeholder: uninstall.sh

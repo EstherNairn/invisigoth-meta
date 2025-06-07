@@ -8,7 +8,13 @@ User=invisigoth
 WorkingDirectory=/opt/invisigoth
 ExecStart=/opt/invisigoth/venv/bin/python3 /opt/invisigoth/main.py
 Restart=on-failure
-EnvironmentFile=/opt/invisigoth/.env
+EnvironmentFile=-/opt/invisigoth/.env
+StandardOutput=append:/opt/invisigoth/logs/app.log
+StandardError=append:/opt/invisigoth/logs/app.log
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
