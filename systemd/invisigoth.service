@@ -1,0 +1,14 @@
+[Unit]
+Description=Invisigoth AI Self-Bootstrapping Assistant
+After=network.target
+
+[Service]
+Type=simple
+User=invisigoth
+WorkingDirectory=/opt/invisigoth
+ExecStart=/opt/invisigoth/venv/bin/python3 /opt/invisigoth/main.py
+Restart=on-failure
+EnvironmentFile=/opt/invisigoth/.env
+
+[Install]
+WantedBy=multi-user.target
