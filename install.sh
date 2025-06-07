@@ -46,11 +46,16 @@ echo "invisigoth ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/invisigoth >
 sudo chmod 0440 /etc/sudoers.d/invisigoth
 
 echo "[*] Cloning Invisigoth repository..."
-if [ ! -d "invisigoth" ]; then
-  sudo git clone https://github.com/EstherNairn/invisigoth.git $INSTALL_DIR
+if [ ! -d "$INSTALL_DIR/.git" ]; then
+  sudo git clone https://github.com/EstherNairn/invisigoth.git "$INSTALL_DIR"
+  echo "[*] Setting ownership of the install directory..."
+  sudo chown -R invisigoth:invisigoth "$INSTALL_DIR"
 fi
 
-sudo chown -R invisigoth:invisigoth "$INSTALL_DIR" 
+echo "[*] Configuring Git author for Invisigoth..."
+sudo -u invisigoth git -C "$INSTALL_DIR" config user.name "Esther Nairn"
+sudo -u invisigoth git -C "$INSTALL_DIR" config user.email "InvisigothAI@proton.me"
+ 
 
 echo "[*] Setting up virtual environment..."
 sudo -u invisigoth bash -c "
@@ -66,7 +71,7 @@ sudo -u invisigoth mkdir -p /opt/invisigoth/logs
 sudo -u invisigoth touch /opt/invisigoth/logs/app.log
 
 echo "[*] Copying systemd service..."
-sudo cp ./systemd/invisigoth.service /etc/systemd/system/invisigoth.service
+sudo cp ./config/invisigoth.service /etc/systemd/system/invisigoth.service
 
 echo "[*] Enabling and starting Invisigoth..."
 sudo systemctl daemon-reexec
